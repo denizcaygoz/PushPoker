@@ -2,6 +2,9 @@ package entity
 
 //Push Poker  represents the board game.
 class PushPoker {
+
+    var players: MutableList<Player> = mutableListOf()
+
     // Tracks the number of rounds left in the game.
     var roundsLeft: Int = 0
 
