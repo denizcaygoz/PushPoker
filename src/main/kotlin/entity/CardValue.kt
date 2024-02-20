@@ -3,7 +3,7 @@ package entity
 import java.util.*
 
 /**
- * Enum to distinguish between the 13 possible values in a french-suited card game:
+ * CardValue Class represents 13 different possible values
  * 2-10, Jack, Queen, King, and Ace.
  *
  * The values are ordered according to their most common ordering:
@@ -48,16 +48,7 @@ enum class CardValue {
         }
 
 
-    companion object {
 
-        /**
-         * A set of values for a reduced set of 4x8=32 cards (starting with the 7)
-         */
-        fun shortDeck(): Set<CardValue> {
-            return EnumSet.of(ACE, SEVEN, EIGHT, NINE, TEN, JACK, QUEEN, KING)
-        }
-
-    }
 
 
 

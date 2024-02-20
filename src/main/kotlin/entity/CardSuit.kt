@@ -1,7 +1,7 @@
 package entity
 
 /**
- * Enum to distinguish between the four possible suits in a french-suited card game:
+ * CardSuit class represents 4 different type of cards:
  * clubs, spades, hearts, or diamonds
  */
 enum class CardSuit {
