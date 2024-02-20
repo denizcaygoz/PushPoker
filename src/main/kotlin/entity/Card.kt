@@ -6,5 +6,5 @@ package entity
  *
  */
 class Card(val cardsuit: CardSuit,val cardValue: CardValue) {
-
+    override fun toString() = "$cardsuit$cardValue"
 }

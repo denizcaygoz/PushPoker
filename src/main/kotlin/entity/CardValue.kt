@@ -1,14 +1,11 @@
 package entity
 
-import java.util.*
-
 /**
  * CardValue Class represents 13 different possible values
  * 2-10, Jack, Queen, King, and Ace.
  *
  * The values are ordered according to their most common ordering:
  * 2 < 3 < ... < 10 < Jack < Queen < King < Ace
- *
  */
 enum class CardValue {
     TWO,

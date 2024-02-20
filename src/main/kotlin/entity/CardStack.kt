@@ -4,18 +4,15 @@ package entity
 
 /**
  * CardStack class is used for drawStack and discardStack in PushPoker class.
- *
  */
 
 class CardStack {
-
-    //List of cards which is part of drawStack or discardStack
-    var cards: MutableList<Card> = mutableListOf()
-
-
-
     /**
-     * Draws a specified amount of cards from the stack.
+     *List of cards which is part of drawStack or discardStack
+     */
+    var cards: MutableList<Card> = mutableListOf()
+    /**
+     * Draws a specified amount of cards from the stack. Is Used only by drawStack in PushPoker Class.
      * @param amount The number of cards to draw.
      * @return A list of drawn cards, which are removed from the stack.
      */
@@ -29,7 +26,6 @@ class CardStack {
         //To remove these cards from the original list
         cards = cards.drop(actualAmount).toMutableList()
 
-        // Return the drawn cards
         return drawnCards
     }
 }
