@@ -1,9 +1,7 @@
 package entity
-
 /**
  *This class to represents a player in the game.
  */
-
 class Player(val name: String) {
     /**
       *Indicates whether the player has performed a 'push' action in the current round.
@@ -24,5 +22,4 @@ class Player(val name: String) {
     var openCards: MutableList<Card> = mutableListOf()
 
     var handResult: PokerHand = PokerHand.NONE
-
 }

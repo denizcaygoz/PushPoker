@@ -13,7 +13,7 @@ class PushPokerTest {
     fun setUp() {
         pushPokerToTest3CardsOnTheTable = PushPoker()
         pushPokerToTest3CardsOnTheTable.players.addAll(listOf(Player("P1"),Player("P2")))
-        pushPokerToTest3CardsOnTheTable.tableCards.addAll(listOf(
+        pushPokerToTest3CardsOnTheTable.tableCards!!.addAll(listOf(
             Card(CardSuit.HEARTS, CardValue.ACE),
             Card(CardSuit.DIAMONDS, CardValue.KING),
             Card(CardSuit.CLUBS, CardValue.QUEEN)
@@ -28,11 +28,11 @@ class PushPokerTest {
         pushPoker = PushPoker()
         pushPoker.players.addAll(listOf(Player("P1"),Player("P2")))
         pushPoker.roundsLeft = 5
-        pushPoker.tableCards.addAll(listOf(Card(CardSuit.HEARTS, CardValue.ACE)))
+        pushPoker.tableCards!!.addAll(listOf(Card(CardSuit.HEARTS, CardValue.ACE)))
 
         assertEquals(2, pushPoker.players.size)
         assertEquals(5, pushPoker.roundsLeft)
-        assertEquals(2, pushPoker.tableCards.size)
+        assertEquals(2, pushPoker.tableCards!!.size)
     }
 
     @Test
@@ -50,7 +50,7 @@ class PushPokerTest {
         assertFailsWith<IllegalArgumentException> {
             PushPoker().apply {
                 this.players.addAll(players)
-                this.tableCards.addAll(listOf(
+                this.tableCards!!.addAll(listOf(
                     Card(CardSuit.HEARTS, CardValue.ACE),
                     Card(CardSuit.DIAMONDS, CardValue.KING),
                     Card(CardSuit.CLUBS, CardValue.QUEEN),
@@ -64,7 +64,7 @@ class PushPokerTest {
      */
     @Test
     fun testWith3TableCards() {
-        assertEquals(3, pushPokerToTest3CardsOnTheTable.tableCards.size, "Should have 3 cards on the table")
+        assertEquals(3, pushPokerToTest3CardsOnTheTable.tableCards!!.size, "Should have 3 cards on the table")
     }
 
 }

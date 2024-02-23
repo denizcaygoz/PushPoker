@@ -2,8 +2,6 @@ package entity
 /**
  *PushPoker class represents the board of the game on which players can play.
  */
-
-
 class PushPoker {
     /**
      * players represent the list of players in the game.
@@ -20,19 +18,15 @@ class PushPoker {
     /**
      *drawStack Represents the stack of cards from which players draw.
      */
-    val drawStack = CardStack()
+    var drawStack: CardStack? = null
     /**
      * discardStack Represents the stack of cards where players discard. This stack is used for players to discard cards from their hand.
      */
-    val discardStack = CardStack()
+    var discardStack: CardStack? = null
     /**
      * tableCards Holds the cards currently on the table.
      */
-    val tableCards: MutableList<Card> = mutableListOf()
+    var tableCards: MutableList<Card>? = null
 
-    init {
-        require(players.size in 2..4) {"Number of Players has to be between 2-4"}
-        require(tableCards.size <= 3) {"More than 3 Cards on the table is not possible"}
-    }
 
 }
