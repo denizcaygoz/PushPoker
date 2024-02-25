@@ -223,18 +223,17 @@ class PlayerActionService(private val rootService: RootService): AbstractRefresh
         var straightFlush = false
         var highestStraightFlush: CardValue? = null
 
-            if (sortedCards[0].cardValue.ordinal + 4 == sortedCards[4].cardValue.ordinal &&
-                sortedCards[0].cardValue.ordinal + 3 == sortedCards[3].cardValue.ordinal &&
-                sortedCards[0].cardValue.ordinal + 2 == sortedCards[2].cardValue.ordinal &&
-                sortedCards[0].cardValue.ordinal + 1 == sortedCards[1].cardValue.ordinal) {
-                straight = true
+        if (sortedCards[0].cardValue.ordinal + 4 == sortedCards[4].cardValue.ordinal &&
+            sortedCards[0].cardValue.ordinal + 3 == sortedCards[3].cardValue.ordinal &&
+            sortedCards[0].cardValue.ordinal + 2 == sortedCards[2].cardValue.ordinal &&
+            sortedCards[0].cardValue.ordinal + 1 == sortedCards[1].cardValue.ordinal) {
+            straight = true
                 // Checking for Straight Flush
-                if (flush) {
-                    straightFlush = true
-                    highestStraightFlush = sortedCards[4].cardValue
-                }
+            if (flush) {
+                straightFlush = true
+                highestStraightFlush = sortedCards[4].cardValue
             }
-
+        }
         // Checking for Royal Flush
         val royalFlush: Boolean = straightFlush && highestStraightFlush == CardValue.ACE
 
