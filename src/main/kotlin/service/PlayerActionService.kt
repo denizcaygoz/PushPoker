@@ -165,7 +165,8 @@ class PlayerActionService(private val rootService: RootService): AbstractRefresh
         val game = rootService.currentGame
         checkNotNull(game) { "No game started yet." }
 
-
+        //game.players.(game.currentPlayer).hasPushed = false
+        //game.players.(game.currentPlayer).hasSwapped = false
 
         //1 Round ends. Every player made their move 1 time.
         if(game.players.size-1 == game.currentPlayer) {
@@ -216,24 +217,24 @@ class PlayerActionService(private val rootService: RootService): AbstractRefresh
         val cardsBySuit: Map<CardSuit, List<Card>> = sortedCards.groupBy {it.cardsuit}
 
         // Checking for Flush
-        val flush: Boolean = cardsBySuit.values.any {it.size >= 5}
+        val flush: Boolean = cardsBySuit.values.any {it.size == 5}
         // Checking for Straight (at least 5 serial values)
         var straight = false
         var straightFlush = false
         var highestStraightFlush: CardValue? = null
-        for (i in 0 until sortedCards.size - 4) {
-            if (sortedCards[i].cardValue.ordinal + 4 == sortedCards[i+4].cardValue.ordinal &&
-                sortedCards[i].cardValue.ordinal + 3 == sortedCards[i+3].cardValue.ordinal &&
-                sortedCards[i].cardValue.ordinal + 2 == sortedCards[i+2].cardValue.ordinal &&
-                sortedCards[i].cardValue.ordinal + 1 == sortedCards[i+1].cardValue.ordinal) {
+
+            if (sortedCards[0].cardValue.ordinal + 4 == sortedCards[4].cardValue.ordinal &&
+                sortedCards[0].cardValue.ordinal + 3 == sortedCards[3].cardValue.ordinal &&
+                sortedCards[0].cardValue.ordinal + 2 == sortedCards[2].cardValue.ordinal &&
+                sortedCards[0].cardValue.ordinal + 1 == sortedCards[1].cardValue.ordinal) {
                 straight = true
                 // Checking for Straight Flush
-                if (flush && cardsBySuit[sortedCards[i].cardsuit]?.containsAll(sortedCards.subList(i,i+5)) == true) {
+                if (flush) {
                     straightFlush = true
-                    highestStraightFlush = sortedCards[i+4].cardValue
+                    highestStraightFlush = sortedCards[4].cardValue
                 }
             }
-        }
+
         // Checking for Royal Flush
         val royalFlush: Boolean = straightFlush && highestStraightFlush == CardValue.ACE
 
