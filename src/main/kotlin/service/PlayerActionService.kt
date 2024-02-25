@@ -90,17 +90,13 @@ class PlayerActionService(private val rootService: RootService): AbstractRefresh
         check(!currentPlayer.hasSwapped)
         {"Player ${game.currentPlayer} has already swapped."}
 
-        currentPlayer.openCards.let { playerOpenCards ->
-            game.tableCards?.let { tableCards ->
-                for (i in 0..2) {
-                    if (i < playerOpenCards.size && i < tableCards.size) {
-                        val playerCardTemp = playerOpenCards[i]
-                        playerOpenCards[i] = tableCards[i]
-                        tableCards[i] = playerCardTemp
-                    }
-                }
-            } ?: throw IllegalStateException("TableCards are not initialized.")
-        }
+        val tableCards = game.tableCards
+
+        val tempCards = ArrayList<Card>(currentPlayer.openCards)
+        currentPlayer.openCards.clear()
+        currentPlayer.openCards.addAll(tableCards!!)
+        tableCards.clear()
+        tableCards.addAll(tempCards)
 
         evaluateHand(game.players[game.currentPlayer])
 
@@ -242,7 +238,7 @@ class PlayerActionService(private val rootService: RootService): AbstractRefresh
         val royalFlush: Boolean = straightFlush && highestStraightFlush == CardValue.ACE
 
         // Checking for other hands
-        val fourOfAKind: Boolean = cardsByValue.values.any {it.size == 4}
+        val fourOfAKind: Boolean = cardsByValue.values.any {it.size >= 4}
         val threeOfAKind: Boolean = cardsByValue.values.any {it.size == 3}
         val pairs: Int = cardsByValue.values.count {it.size == 2}
 
