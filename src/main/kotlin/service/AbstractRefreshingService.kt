@@ -2,11 +2,16 @@ package service
 
 import view.Refreshable
 
+/**
+ * AbstractRefreshingService is inherited by Service classes. In order to use addRefreshable
+ * and onAllRefreshables functions.
+ */
 abstract class AbstractRefreshingService {
-    private val refreshables = mutableListOf<Refreshable>()
-    fun addRefreshable(newRefreshable : Refreshable) {
+    var refreshables = mutableListOf<Refreshable>()
+    fun addRefreshable(newRefreshable: Refreshable) {
         refreshables += newRefreshable
     }
+
     fun onAllRefreshables(method: Refreshable.() -> Unit) =
         refreshables.forEach { it.method() }
 

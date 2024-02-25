@@ -4,6 +4,7 @@ import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
+
 class PlayerActionServiceTest {
 
     private lateinit var game: RootService
@@ -13,6 +14,7 @@ class PlayerActionServiceTest {
         game.gameService.startNewGame(mutableListOf("p1","p2","p3"),7)
         game.currentGame?.currentPlayer = 0
     }
+
 
     @Test
     fun pushLeftTest() {
