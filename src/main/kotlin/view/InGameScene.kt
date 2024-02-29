@@ -11,6 +11,7 @@ import tools.aqua.bgw.components.uicomponents.Label
 import tools.aqua.bgw.core.Alignment
 import tools.aqua.bgw.core.BoardGameScene
 import tools.aqua.bgw.util.BidirectionalMap
+import tools.aqua.bgw.util.Font
 import tools.aqua.bgw.visual.ColorVisual
 import tools.aqua.bgw.visual.ImageVisual
 
@@ -325,13 +326,15 @@ class InGameScene(val rootService: RootService) : BoardGameScene(1920, 1080), Re
     }
 
     private val roundLabel = Label(
-        posX = 1700,
+        posX = 1600,
         posY = 10,
-        width = 100,
-        height = 100,
+        width = 300,
+        height = 200,
+        font = Font(size = 30),
         text = "Remaining Rounds: ",
         alignment = Alignment.CENTER_LEFT,
         isWrapText = true
+
     //text = "Remaining Rounds: " + rootService.currentGame.roundsLeft
     //ilk oyun başladığın bu ve mainmenu scene'i yüklediğimiz için currentGame şu an null
     // buradaki refreshAfterStartNewGame()'de belirle.
@@ -340,8 +343,9 @@ class InGameScene(val rootService: RootService) : BoardGameScene(1920, 1080), Re
     private val handValueLabel = Label(
         posX = 10,
         posY = 10,
-        width = 100,
-        height = 100,
+        width = 300,
+        height = 200,
+        font = Font(size = 30),
         text = "Hand Value: ",
         alignment = Alignment.CENTER_LEFT,
         isWrapText = true
@@ -837,9 +841,19 @@ class InGameScene(val rootService: RootService) : BoardGameScene(1920, 1080), Re
                 player1OpenCard1IsClickable = true
                 player1OpenCard2IsClickable = true
                 player1OpenCard3IsClickable = true
-                if(game.players.size  == 4) {
-                    player4HiddenCard1.peek().showCardSide(CardView.CardSide.BACK)
-                    player4HiddenCard2.peek().showCardSide(CardView.CardSide.BACK)
+                when (game.players.size) {
+                    4 -> {
+                        player4HiddenCard1.peek().showCardSide(CardView.CardSide.BACK)
+                        player4HiddenCard2.peek().showCardSide(CardView.CardSide.BACK)
+                    }
+                    3 -> {
+                        player3HiddenCard1.peek().showCardSide(CardView.CardSide.BACK)
+                        player3HiddenCard2.peek().showCardSide(CardView.CardSide.BACK)
+                    }
+                    2 -> {
+                        player2HiddenCard1.peek().showCardSide(CardView.CardSide.BACK)
+                        player2HiddenCard2.peek().showCardSide(CardView.CardSide.BACK)
+                    }
                 }
                 player1HiddenCard1.peek().showCardSide(CardView.CardSide.FRONT)
                 player1HiddenCard2.peek().showCardSide(CardView.CardSide.FRONT)
@@ -1040,6 +1054,38 @@ class InGameScene(val rootService: RootService) : BoardGameScene(1920, 1080), Re
     override fun refreshAfterEndRound(roundsLeft: Int) {
         val game = rootService.currentGame
         checkNotNull(game) { "No started game found." }
+        player1OpenCard1IsClickable = false
+        player1OpenCard2IsClickable = false
+        player1OpenCard3IsClickable = false
+        player2OpenCard1IsClickable = false
+        player2OpenCard2IsClickable = false
+        player2OpenCard3IsClickable = false
+        player3OpenCard1IsClickable = false
+        player3OpenCard2IsClickable = false
+        player3OpenCard3IsClickable = false
+        player4OpenCard1IsClickable = false
+        player4OpenCard2IsClickable = false
+        player4OpenCard3IsClickable = false
+        openCardsAreClickable = true
+        middleCardsAreClickable = false
+        player1OpenCard2IsClicked = false
+        player1OpenCard1IsClicked = false
+        player1OpenCard3IsClicked = false
+        player2OpenCard1IsClicked = false
+        player2OpenCard2IsClicked = false
+        player2OpenCard3IsClicked = false
+        player3OpenCard1IsClicked = false
+        player3OpenCard2IsClicked = false
+        player3OpenCard3IsClicked = false
+        player4OpenCard1IsClicked = false
+        player4OpenCard2IsClicked = false
+        player4OpenCard3IsClicked = false
+
+        middleCard1IsClicked = false
+        middleCard2IsClicked = false
+        middleCard3IsClicked = false
+        swapOneHandCardIndex = -1
+        swapOneMiddleCardIndex = -1
         roundLabel.text = "Remaining Rounds:" + roundsLeft
         handValueLabel.text = "Hand Value: " + game.players[game.currentPlayer].handResult
 
