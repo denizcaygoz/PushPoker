@@ -8,6 +8,9 @@ import tools.aqua.bgw.core.MenuScene
 import tools.aqua.bgw.util.Font
 import tools.aqua.bgw.visual.ColorVisual
 
+/**
+ * This class represents the score board scene at the end of the game.
+ */
 class ScoreboardScene(private val rootService: RootService) : MenuScene(400, 1080), Refreshable {
     var scoreboard: List<Player> = listOf()
     private val headlineLabel = Label(

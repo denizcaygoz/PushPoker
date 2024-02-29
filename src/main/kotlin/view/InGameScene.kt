@@ -15,6 +15,14 @@ import tools.aqua.bgw.util.Font
 import tools.aqua.bgw.visual.ColorVisual
 import tools.aqua.bgw.visual.ImageVisual
 
+/**
+ * This scene represents everything that can be seen during the play.
+ * The class represents the scene of board game, cards, player and other UI Components in the game.
+ *
+ * Note: I had a very short time while I was implemented this class. And I'm also not familiar with the framework. So
+ * the approaches or solutions I use in my implementation could be better and more efficient.
+ * And the comments could be more.
+ */
 class InGameScene(val rootService: RootService) : BoardGameScene(1920, 1080), Refreshable {
     // Player 1 open cards
     private val player1OpenCard1 = LabeledStackView(posX = 750, posY = 670, "OpenCard 1").apply {
@@ -251,7 +259,7 @@ class InGameScene(val rootService: RootService) : BoardGameScene(1920, 1080), Re
         posX = 650, posY = 500,
         text = "Push Left"
     ).apply {
-        visual = ColorVisual(221, 136, 136)
+        visual = ColorVisual.YELLOW
         onMouseClicked = {
             leftPushClicked = true
             rootService.playerActionService.pushLeft()
@@ -263,7 +271,7 @@ class InGameScene(val rootService: RootService) : BoardGameScene(1920, 1080), Re
         posX = 1190, posY = 500,
         text = "Push Right"
     ).apply {
-        visual = ColorVisual(221, 136, 136)
+        visual = ColorVisual.YELLOW
         onMouseClicked = {
             onMouseClicked = {
                 rightPushClicked = true
@@ -299,14 +307,14 @@ class InGameScene(val rootService: RootService) : BoardGameScene(1920, 1080), Re
             swapAll.isDisabled = true
             endTurn.isDisabled = true
         }
-        visual = ColorVisual(221, 136, 136)
+        visual = ColorVisual.GRAY
     }
     val swapAll = Button(
         width = 180, height = 90,
         posX = 1700, posY = 875,
         text = "Swap All"
     ).apply {
-        visual = ColorVisual(221, 136, 136)
+        visual = ColorVisual.GRAY
         onMouseClicked = {
             swapAllClicked = true
             rootService.playerActionService.swapAll()
@@ -317,7 +325,7 @@ class InGameScene(val rootService: RootService) : BoardGameScene(1920, 1080), Re
         posX = 1700, posY = 975,
         text = "End Turn"
     ).apply {
-        visual = ColorVisual(221, 136, 136)
+        visual = ColorVisual.GRAY
         onMouseClicked = {
             rootService.playerActionService.endTurn()
             this.isDisabled = true
@@ -335,9 +343,6 @@ class InGameScene(val rootService: RootService) : BoardGameScene(1920, 1080), Re
         alignment = Alignment.CENTER_LEFT,
         isWrapText = true
 
-    //text = "Remaining Rounds: " + rootService.currentGame.roundsLeft
-    //ilk oyun başladığın bu ve mainmenu scene'i yüklediğimiz için currentGame şu an null
-    // buradaki refreshAfterStartNewGame()'de belirle.
     )
 
     private val handValueLabel = Label(
@@ -349,7 +354,7 @@ class InGameScene(val rootService: RootService) : BoardGameScene(1920, 1080), Re
         text = "Hand Value: ",
         alignment = Alignment.CENTER_LEFT,
         isWrapText = true
-        //text = "Remaining Rounds: " + rootService.currentGame.players[currentPlayer].handValue
+
     )
 
 
@@ -400,10 +405,11 @@ class InGameScene(val rootService: RootService) : BoardGameScene(1920, 1080), Re
     /**
      * structure to hold pairs of (card, cardView) that can be used
      *
-     * 1. to find the corresponding view for a card passed on by a refresh method (forward lookup)
+     * 1. To identify the appropriate view for a card when it is updated by
+     * a refresh method (known as forward lookup).
      *
-     * 2. to find the corresponding card to pass to a service method on the occurrence of
-     * ui events on views (backward lookup).
+     * 2. To determine the specific card associated with a user interface
+     * event occurring on a view (referred to as backward lookup).
      */
     private val cardMap: BidirectionalMap<Card, CardView> = BidirectionalMap()
     override fun refreshAfterStartNewGame() {
@@ -562,7 +568,8 @@ class InGameScene(val rootService: RootService) : BoardGameScene(1920, 1080), Re
     }
 
     /****************************************
-     * Everything for swapOne()
+     * swapOne() related variables and functions
+     * **************************************
      */
 
     private var swapOneHandCardIndex: Int = -1
@@ -905,7 +912,8 @@ class InGameScene(val rootService: RootService) : BoardGameScene(1920, 1080), Re
     }
 
     /****************************************
-     * Everything for swapOne()
+     * swapOne() related variables and functions
+     * **************************************
      */
     private fun refreshCardsTableSwapAll() {
         val game = rootService.currentGame
@@ -1006,7 +1014,6 @@ class InGameScene(val rootService: RootService) : BoardGameScene(1920, 1080), Re
                 CardView.CardSide.FRONT -> cardView.showBack()
             }
         }
-        //cardView.removeFromParent()
         toStack.add(cardView)
     }
 

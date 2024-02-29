@@ -4,28 +4,24 @@ import entity.Player
 import service.RootService
 import tools.aqua.bgw.core.BoardGameApplication
 /**
- * This class provides to test each scene in the game.
- */
-/**
- * I did the whole view layer in 2-3 days so the comments in this package aren't that useful :/
+ * This class works like a main pool for each scene in the game.
  */
 class PushPokerApplication : BoardGameApplication("PushPoker"),Refreshable  {
     // Central service from which all others are created/accessed
     // also holds the currently active game
     private val rootService = RootService()
 
-    // This is where the actual game takes place
+    // This is where the game takes place
     private val inGameScene = InGameScene(rootService)
 
-    // This menu scene is shown after each finished game (i.e. no more cards to draw)
+    // This Scene is shown after each finished game
     private val scoreboardScene = ScoreboardScene(rootService).apply {
         goToMenuButton.onMouseClicked = {
             this@PushPokerApplication.showMenuScene(mainMenuScene)
         }
     }
 
-    // This menu scene is shown after application start and if the "new game" button
-    // is clicked in the gameFinishedMenuScene
+    // To Exit the game.
     private val mainMenuScene = MainMenuScene(rootService).apply {
         quitButton.onMouseClicked = {
             exit()
@@ -36,18 +32,12 @@ class PushPokerApplication : BoardGameApplication("PushPoker"),Refreshable  {
 
     init {
 
-        // all scenes and the application itself need too
-        // react to changes done in the service layer
         rootService.addRefreshables(
             this,
             inGameScene,
             scoreboardScene,
             mainMenuScene
         )
-
-        // This is just done so that the blurred background when showing
-        // the new game menu has content and looks nicer
-        rootService.gameService.startNewGame(mutableListOf("P1", "P2"),5)
 
         this.showGameScene(inGameScene)
         this.showMenuScene(mainMenuScene, 0)

@@ -7,6 +7,10 @@ import tools.aqua.bgw.core.MenuScene
 import tools.aqua.bgw.util.Font
 import tools.aqua.bgw.visual.ColorVisual
 
+/**
+ * This class represents the Turn scene which pops up after the end turn of previous player.
+ * The player who has turn now has to press start turn button to take the turn.
+ */
 class NextPlayerScene(private val rootService: RootService) : MenuScene(1920, 1080), Refreshable {
 
     private val headlineLabel = Label(
@@ -44,7 +48,7 @@ class NextPlayerScene(private val rootService: RootService) : MenuScene(1920, 10
         val game = rootService.currentGame
         checkNotNull(game) { "No started game found." }
         val str = "Player: " + game.players[game.currentPlayer].name + " has the turn.\n"
-        val str2 = game.roundsLeft.toString() + " Round left."
+        val str2 = "            " + game.roundsLeft.toString() + " Round left."
         headlineLabel.text = str + str2
     }
 }

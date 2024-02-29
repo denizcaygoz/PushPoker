@@ -8,14 +8,14 @@ import tools.aqua.bgw.visual.TextVisual
 import java.awt.Color
 
 /**
- * Custom [CardStack] for [CardView]s with a fixed width of 130px and a fixed height of 200px.
- * It is used for all game stacks on the table.
+ * This class represents a specialized [CardStack] designed for [CardView] elements, each standardized at
+ * 130px in width and 200px in height. It's intended for use with all game stacks displayed on the table.
  *
- * Automatically has a [CompoundVisual] that combines a white semi-transparent [ColorVisual] with
- * a [TextVisual] showing a label.
+ * By default, it features a [CompoundVisual] that merges a translucent white [ColorVisual]
+ * with a [TextVisual] to display a specified label.
  *
- * @param label the label for this stack view; defaults to empty string.
- * @param rotate if true, the label will be rotated 180 degrees
+ * @param label Specifies the text label for this stack view. If not provided, it defaults to an empty string.
+ * @param rotate When set to true, the label text will be rotated by 180 degrees.
  */
 class LabeledStackView(posX: Number, posY: Number, label: String = "", rotate: Int = 0) :
     CardStack<CardView>(height = 200, width = 130, posX = posX, posY = posY) {

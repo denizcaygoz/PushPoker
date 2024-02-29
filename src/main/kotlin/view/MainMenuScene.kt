@@ -9,6 +9,9 @@ import tools.aqua.bgw.core.MenuScene
 import tools.aqua.bgw.util.Font
 import tools.aqua.bgw.visual.ColorVisual
 
+/**
+ * This class represents the Main Menu scene
+ */
 class MainMenuScene(private val rootService: RootService) : MenuScene(400, 1080), Refreshable {
     //is used to store player names.
     private var playerNames: MutableList<String> = mutableListOf("Player1","Player2")
