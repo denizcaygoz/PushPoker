@@ -3,6 +3,7 @@ import entity.*
 import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertNotEquals
 
 /**
  * PlayerActionServiceTest is to test PlayerActionService class.
@@ -10,18 +11,39 @@ import kotlin.test.assertEquals
 class PlayerActionServiceTest {
 
     private lateinit var game: RootService
+    private lateinit var testRefreshable: TestRefreshable
     @BeforeTest
     fun setUp() {
         game = RootService()
         game.gameService.startNewGame(mutableListOf("p1","p2","p3"),7)
         game.currentGame?.currentPlayer = 0
+
     }
+
+    /**
+     * tested if:
+     * game is successfully initialized.
+     * refreshAfterStartTurn is called in startTurn() function.
+     */
+    @Test
+    fun startTurnTest() {
+        testRefreshable = TestRefreshable()
+        game.addRefreshable(testRefreshable)
+        game.playerActionService.startTurn()
+
+        assertNotEquals(null,game.currentGame,"game is excepted to be initialized.")
+
+        assertEquals(true,testRefreshable.refreshAfterStartTurn)
+    }
+
 
     /**
      * pushLeftTest tests the pushLeft() function.
      */
     @Test
     fun pushLeftTest() {
+        testRefreshable = TestRefreshable()
+        game.addRefreshable(testRefreshable)
         //setting up cards of the drawStack
         val cardStack1 = CardStack().apply {
             cards = mutableListOf(
@@ -65,6 +87,11 @@ class PlayerActionServiceTest {
         assertEquals(CardValue.THREE, tableCards[1].cardValue)
         //to ensure you check the expected card after pushLeft operation
         assertEquals(CardValue.TEN, tableCards[2].cardValue)
+
+        //testing refreshing functions.
+        assertEquals(true,testRefreshable.refreshTableCards)
+        assertEquals(true,testRefreshable.refreshDiscardStack)
+
     }
 
     /**
@@ -72,6 +99,8 @@ class PlayerActionServiceTest {
      */
     @Test
     fun pushRightTest() {
+        testRefreshable = TestRefreshable()
+        game.addRefreshable(testRefreshable)
         //setting up cards of the drawStack
         val cardStack1 = CardStack().apply {
             cards = mutableListOf(
@@ -117,6 +146,10 @@ class PlayerActionServiceTest {
         // The rest of tableCards should shift right accordingly
         assertEquals(CardValue.ACE, tableCards[1].cardValue)
         assertEquals(CardValue.TWO, tableCards[2].cardValue)
+
+        //testing refreshing functions.
+        assertEquals(true,testRefreshable.refreshTableCards)
+        assertEquals(true,testRefreshable.refreshDiscardStack)
     }
 
     /**
@@ -124,30 +157,38 @@ class PlayerActionServiceTest {
      */
     @Test
     fun swapAllTest() {
-
+        testRefreshable = TestRefreshable()
+        game.addRefreshable(testRefreshable)
         val currentPlayer = game.currentGame?.players?.get(game.currentGame!!.currentPlayer)
 
         //setting up the cards of the table
-        val cardStack1 = mutableListOf(
+        val cardStackForTable = mutableListOf(
                 Card(CardSuit.HEARTS, CardValue.TEN),
                 Card(CardSuit.DIAMONDS, CardValue.JACK),
                 Card(CardSuit.CLUBS, CardValue.QUEEN)
             )
         //setting up the cards of the player
-        val cardStack2: MutableList<Card> = mutableListOf(
+        val cardStackForPlayer: MutableList<Card> = mutableListOf(
             Card(CardSuit.SPADES, CardValue.ACE),
             Card(CardSuit.HEARTS, CardValue.TWO),
             Card(CardSuit.DIAMONDS, CardValue.THREE)
         )
-        //assigning cardStack1 to tableCards
-        game.currentGame?.tableCards = cardStack1
-        //assigning cardStack2 to open Cards of the player.
-        currentPlayer?.openCards = cardStack2
+
+        game.currentGame?.tableCards = cardStackForTable
+        currentPlayer?.openCards = cardStackForPlayer
 
         //assigning initial table cards.
-        val initialTableCards = cardStack1
+        val initialTableCards = mutableListOf(
+            Card(CardSuit.HEARTS, CardValue.TEN),
+            Card(CardSuit.DIAMONDS, CardValue.JACK),
+            Card(CardSuit.CLUBS, CardValue.QUEEN)
+        )
         //assigning initial player cards.
-        val initialPlayerCards = cardStack2
+        val initialPlayerCards = mutableListOf(
+            Card(CardSuit.SPADES, CardValue.ACE),
+            Card(CardSuit.HEARTS, CardValue.TWO),
+            Card(CardSuit.DIAMONDS, CardValue.THREE)
+        )
 
 
         currentPlayer?.hasPushed = true
@@ -159,13 +200,6 @@ class PlayerActionServiceTest {
         //Executing swapAll action
         game.playerActionService.swapAll()
 
-        //to validate the swap operation
-        // The player's open cards should match the initial table cards
-        assertEquals(initialTableCards, currentPlayer?.openCards)
-
-        // The table cards should  match the initial player's open cards
-        assertEquals(initialPlayerCards, game.currentGame?.tableCards)
-
         // to ensure the specific cards are correctly swapped
         for (i in playerCards!!.indices) {
             assertEquals(initialPlayerCards[i].cardValue, game.currentGame?.tableCards?.get(i)?.cardValue)
@@ -173,10 +207,14 @@ class PlayerActionServiceTest {
         }
 
         for (i in tableCards!!.indices) {
-            assertEquals(initialTableCards[i].cardValue, currentPlayer.openCards.get(i).cardValue)
-            assertEquals(initialTableCards[i].cardsuit, currentPlayer.openCards.get(i).cardsuit)
+            assertEquals(initialTableCards[i].cardValue, currentPlayer.openCards[i].cardValue)
+            assertEquals(initialTableCards[i].cardsuit, currentPlayer.openCards[i].cardsuit)
         }
 
+        //testing refreshing functions.
+        assertEquals(true,testRefreshable.refreshTableCards)
+        assertEquals(true,testRefreshable.refreshPlayerCards)
+        assertEquals(true,testRefreshable.refreshHandValue)
     }
 
     /**
@@ -184,6 +222,8 @@ class PlayerActionServiceTest {
      */
     @Test
     fun swapOneTest() {
+        testRefreshable = TestRefreshable()
+        game.addRefreshable(testRefreshable)
         val currentPlayer = game.currentGame?.players?.get(game.currentGame!!.currentPlayer)
 
         //setting up the cards of the table
@@ -220,25 +260,103 @@ class PlayerActionServiceTest {
         assertEquals(CardValue.THREE, currentPlayer?.openCards?.get(2)?.cardValue)
         assertEquals(CardValue.TEN, game.currentGame?.tableCards?.get(0)?.cardValue)
         assertEquals(CardValue.QUEEN, game.currentGame?.tableCards?.get(2)?.cardValue)
+
+        //testing refreshing functions.
+        assertEquals(true,testRefreshable.refreshTableCards)
+        assertEquals(true,testRefreshable.refreshPlayerCards)
+        assertEquals(true,testRefreshable.refreshHandValue)
     }
 
     /**
      * EndTurnTest tests the endTurn function.
+     * For the case EndTurn: player has finished his turn but nor the game or the round
      */
     @Test
     fun endTurnTest() {
-
+        testRefreshable = TestRefreshable()
+        game.addRefreshable(testRefreshable)
         val initialCurrentPlayerIndex = game.currentGame?.currentPlayer ?: 0
-        val initialRoundsLeft = game.currentGame?.roundsLeft ?: 0
+        val initialRoundsLeft = game.currentGame?.roundsLeft ?: 3
 
         // to execute endTurn function
         game.playerActionService.endTurn()
+
+        //testing refreshing functions.
+        assertEquals(true,testRefreshable.refreshAfterEndTurn)
+
+        //To test if game exists.
+        assertNotEquals(null,game.currentGame,"The game is not null")
+
+        //to check if the hasPushed and hasSwapped set to false.
+        assertEquals(false,game.currentGame!!.players[game.currentGame!!.currentPlayer].hasPushed)
+        assertEquals(false,game.currentGame!!.players[game.currentGame!!.currentPlayer].hasSwapped)
+
+
 
         //testing to transition to the next player
         val newCurrentPlayerIndex = game.currentGame?.currentPlayer
         assertEquals((initialCurrentPlayerIndex + 1) , newCurrentPlayerIndex, "Should move to the next player.")
         //testing roundsLeft.
         assertEquals(initialRoundsLeft, game.currentGame?.roundsLeft, "Rounds left should remain the same if not last player's turn.")
+    }
+    /**
+     * EndTurnTest tests the endTurn function.
+     * For the case endRound: player has finished and the round also has finished but not the game.
+     */
+    @Test
+    fun endTurnTest2() {
+        testRefreshable = TestRefreshable()
+        game.addRefreshable(testRefreshable)
+        //the last player suppose to have the turn.
+        game.currentGame?.currentPlayer = (game.currentGame!!.players.size - 1)
+        //
+        val initialRoundsLeft = game.currentGame?.roundsLeft ?: 4
+
+        // to execute endTurn function
+        game.playerActionService.endTurn()
+
+        //testing refreshing functions.
+        assertEquals(true,testRefreshable.refreshAfterEndRound)
+
+        //to check if the hasPushed and hasSwapped set to false.
+        assertEquals(false,game.currentGame!!.players[game.currentGame!!.currentPlayer].hasPushed)
+        assertEquals(false,game.currentGame!!.players[game.currentGame!!.currentPlayer].hasSwapped)
+
+        //testing to transition to the next player
+        val newCurrentPlayerIndex = game.currentGame?.currentPlayer
+        assertEquals(0 , newCurrentPlayerIndex, "Should move to the next player.")
+        //testing roundsLeft.
+        assertEquals(initialRoundsLeft - 1, game.currentGame?.roundsLeft, "Rounds left should be decremented by 1.")
+    }
+
+    /**
+     * EndTurnTest tests the endTurn function.
+     * For the case endGame: player has finished and the round also has finished and the game as well.
+     */
+    @Test
+    fun endTurnTest3() {
+        testRefreshable = TestRefreshable()
+        game.addRefreshable(testRefreshable)
+        //the last player suppose to have the turn.
+        game.currentGame?.currentPlayer = (game.currentGame!!.players.size - 1)
+        //to ensure that the last round is being played.
+        game.currentGame?.roundsLeft = 1
+
+        // to execute endTurn function
+        game.playerActionService.endTurn()
+
+        //testing refreshing functions.
+        assertEquals(true,testRefreshable.refreshAfterEndGame)
+
+        //to check if the hasPushed and hasSwapped set to false.
+        assertEquals(false,game.currentGame!!.players[game.currentGame!!.currentPlayer].hasPushed)
+        assertEquals(false,game.currentGame!!.players[game.currentGame!!.currentPlayer].hasSwapped)
+
+        //testing to transition to the next player
+        val newCurrentPlayerIndex = game.currentGame?.currentPlayer
+        assertEquals(0 , newCurrentPlayerIndex, "Should move to the next player.")
+        //testing roundsLeft.
+        assertEquals(0, game.currentGame?.roundsLeft, "Rounds left should be decremented by 1.")
     }
 
     /**
@@ -248,7 +366,8 @@ class PlayerActionServiceTest {
 
     @Test
     fun evaluateHandTest() {
-
+        testRefreshable = TestRefreshable()
+        game.addRefreshable(testRefreshable)
         val currentPlayer = game.currentGame?.players?.get(game.currentGame!!.currentPlayer)
 
         //Test 1: To test royal Flush
@@ -270,6 +389,8 @@ class PlayerActionServiceTest {
 
         game.playerActionService.evaluateHand(currentPlayer!!)
 
+        //testing refreshing functions.
+        assertEquals(true,testRefreshable.refreshHandValue)
 
         assertEquals(PokerHand.ROYAL_FLUSH, currentPlayer.handResult, "Royal Flush expected.")
 
@@ -286,8 +407,8 @@ class PlayerActionServiceTest {
             Card(CardSuit.CLUBS, CardValue.FIVE),
             Card(CardSuit.CLUBS, CardValue.SEVEN),
         )
-        currentPlayer?.openCards = playerOpenHand
-        currentPlayer?.hiddenCards = playerHiddenHand
+        currentPlayer.openCards = playerOpenHand
+        currentPlayer.hiddenCards = playerHiddenHand
 
         game.playerActionService.evaluateHand(currentPlayer)
 

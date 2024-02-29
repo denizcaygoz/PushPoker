@@ -1,9 +1,6 @@
 package service
 import entity.PokerHand
-import kotlin.test.BeforeTest
-import kotlin.test.Test
-import kotlin.test.assertEquals
-import kotlin.test.assertFailsWith
+import kotlin.test.*
 
 /**
  * GameServiceTest class is to test GameService class.
@@ -156,6 +153,9 @@ class GameServiceTest {
 
         // First test
         gameService.startNewGame(listOf("p1", "p2", "p3", "p4"), 5)
+
+        //To test if the game is initialized.
+        assertNotEquals(null,rootService.currentGame,"is excepted the game is not null and initialized.")
 
         // setting up hand results of players for the first test
         rootService.currentGame!!.players[0].handResult = PokerHand.STRAIGHT // p1

@@ -21,5 +21,8 @@ class Player(val name: String) {
      */
     var openCards: MutableList<Card> = mutableListOf()
 
+    /**
+     * handResult represents the hand value player has.
+     */
     var handResult: PokerHand = PokerHand.NONE
 }

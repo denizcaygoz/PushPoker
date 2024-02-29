@@ -8,7 +8,8 @@ class PushPoker {
      */
     var players: MutableList<Player> = mutableListOf()
     /**
-     * currentPlayer Represents the index or  of the current player. This can be used to keep track of whose turn it is in the game.
+     * currentPlayer Represents the index or  of the current player.
+     * This can be used to keep track of whose turn it is in the game.
      */
     var currentPlayer: Int = 0
     /**
@@ -20,7 +21,8 @@ class PushPoker {
      */
     var drawStack: CardStack? = null
     /**
-     * discardStack Represents the stack of cards where players discard. This stack is used for players to discard cards from their hand.
+     * discardStack Represents the stack of cards where players discard.
+     * This stack is used for players to discard cards from their hand.
      */
     var discardStack: CardStack? = null
     /**

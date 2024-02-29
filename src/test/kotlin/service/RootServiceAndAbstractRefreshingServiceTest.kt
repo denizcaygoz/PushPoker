@@ -7,7 +7,7 @@ import kotlin.test.assertEquals
 /**
  * A class which inherits Refreshable to help testing
  */
-class TestRefreshable: Refreshable {
+class TestRefreshable0: Refreshable {
 
 }
 
@@ -29,8 +29,8 @@ class RootServiceAndAbstractRefreshingServiceTest {
      */
     @Test
     fun addRefreshableTest() {
-        val testRefreshable1 = TestRefreshable()
-        val testRefreshable2 = TestRefreshable()
+        val testRefreshable1 = TestRefreshable0()
+        val testRefreshable2 = TestRefreshable0()
         rootService.gameService.addRefreshable(testRefreshable1)
         assertEquals(1,rootService.gameService.refreshables.size,"Size of the refresables should be 1")
 

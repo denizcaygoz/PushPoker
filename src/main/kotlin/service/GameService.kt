@@ -24,7 +24,7 @@ class GameService(private val rootService: RootService): AbstractRefreshingServi
         check(players.size <= 4) {"maximum 4 players"}
 
         //to shuffle the order of the players' List
-        players.shuffled()
+        //players.shuffled()
         //draw stack is by createNewDeck() initialized
         val drawStack: CardStack = rootService.cardService.createNewDeck()
         //game is initialized.
@@ -48,6 +48,11 @@ class GameService(private val rootService: RootService): AbstractRefreshingServi
         //currentGame is assigned the game variable (which is a PushPoker class)
         rootService.currentGame = game
 
+        /**
+         * this is calculated so that we can see the hand value of player 1 right after the game starts.
+         */
+        rootService.playerActionService.evaluateHand(rootService.currentGame!!.players[rootService.currentGame!!.currentPlayer])
+
         onAllRefreshables {
             refreshAfterStartNewGame()
         }
@@ -63,6 +68,6 @@ class GameService(private val rootService: RootService): AbstractRefreshingServi
     fun evaluateGame(): List<Player> {
         //If currentGame is null then throw IllegalStateException
         val game = rootService.currentGame ?: throw IllegalStateException("Game has not been started")
-        return game.players.sortedByDescending { it.handResult }
+        return game.players.sortedByDescending { it.handResult }.toMutableList()
     }
 }

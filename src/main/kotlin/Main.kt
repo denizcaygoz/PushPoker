@@ -1,6 +1,6 @@
-import view.SopraApplication
+import view.PushPokerApplication
 
 fun main() {
-    SopraApplication().show()
+    PushPokerApplication().show()
     println("Application ended. Goodbye")
 }

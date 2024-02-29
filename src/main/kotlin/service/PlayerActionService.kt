@@ -5,7 +5,10 @@ import entity.*
  * In the PlayerActionService class the purpose of the functions is mainly to determine the course of the game.
  * And the options the player able to choose in order to perform his actions in the game.
  */
+
 class PlayerActionService(private val rootService: RootService): AbstractRefreshingService() {
+
+    var scoreboardList: List<Player> = mutableListOf()
     /**
      * startTurn is called when the player has the turn.
      * refreshAfterStartTurn is called to update the GUI
@@ -13,7 +16,10 @@ class PlayerActionService(private val rootService: RootService): AbstractRefresh
     fun startTurn() {
         val game = rootService.currentGame
         checkNotNull(game) { "Game is not started yet." }
-        onAllRefreshables { refreshAfterStartTurn(game.players[game.currentPlayer]) }
+        evaluateHand(game.players[game.currentPlayer])
+        onAllRefreshables { refreshAfterStartTurn(game.players[game.currentPlayer])
+                                            refreshHandValue(game.players[game.currentPlayer])
+        }
     }
 
     /**
@@ -108,7 +114,7 @@ class PlayerActionService(private val rootService: RootService): AbstractRefresh
 
         currentPlayer.hasSwapped = true
 
-        endTurn()
+        //endTurn()
     }
 
     /**
@@ -155,7 +161,7 @@ class PlayerActionService(private val rootService: RootService): AbstractRefresh
 
         currentPlayer.hasSwapped = true
 
-        endTurn()
+        //endTurn()
     }
     /**
      * endTurn() is called when the player has clicked the swapOne button.
@@ -165,16 +171,17 @@ class PlayerActionService(private val rootService: RootService): AbstractRefresh
         val game = rootService.currentGame
         checkNotNull(game) { "No game started yet." }
 
-        //game.players.(game.currentPlayer).hasPushed = false
-        //game.players.(game.currentPlayer).hasSwapped = false
+
 
         //1 Round ends. Every player made their move 1 time.
         if(game.players.size-1 == game.currentPlayer) {
+            game.players[game.currentPlayer].hasPushed = false
+            game.players[game.currentPlayer].hasSwapped = false
             game.currentPlayer = 0
             game.roundsLeft--
             //Game is over
             if(game.roundsLeft == 0) {
-                rootService.gameService.evaluateGame()
+                scoreboardList = rootService.gameService.evaluateGame()
                 onAllRefreshables {
                     refreshAfterEndGame()
                 }
@@ -183,14 +190,18 @@ class PlayerActionService(private val rootService: RootService): AbstractRefresh
             else {
                 onAllRefreshables {
                     refreshAfterEndRound(game.roundsLeft)
+                    refreshHandValue(game.players[game.currentPlayer])
                 }
             }
         }
         //Round haven't finished yet.
         else {
+            game.players[game.currentPlayer].hasPushed = false
+            game.players[game.currentPlayer].hasSwapped = false
             game.currentPlayer++
             onAllRefreshables {
                 refreshAfterEndTurn()
+                refreshHandValue(game.players[game.currentPlayer])
             }
         }
     }
