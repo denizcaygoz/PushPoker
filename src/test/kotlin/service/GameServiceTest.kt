@@ -10,6 +10,10 @@ import kotlin.test.*
 class GameServiceTest {
 
     private lateinit var game: RootService
+
+    /**
+     * calling startNewGame() function.
+     */
     @BeforeTest
     fun setUp() {
         game = RootService()
@@ -47,7 +51,8 @@ class GameServiceTest {
 
         //Check the size of the deck after the cards are given to each player from drawStack.
         val expectedDeckSize = 52 - (game.players.size * (2 + 3)) - 3
-        assertEquals(expectedDeckSize, game.drawStack?.cards?.size, "Draw stack should be reduced after the initial card distribution.")
+        assertEquals(expectedDeckSize, game.drawStack?.cards?.size,
+            "Draw stack should be reduced after the initial card distribution.")
     }
 
     /**
@@ -187,5 +192,17 @@ class GameServiceTest {
         assertEquals(PokerHand.FOUR_OF_A_KIND, sortedPlayers[1].handResult, "p1 should be second with FOUR_OF_A_KIND.")
         assertEquals(PokerHand.FLUSH, sortedPlayers[2].handResult, "p3 should be third with FLUSH.")
         assertEquals(PokerHand.THREE_OF_A_KIND, sortedPlayers[3].handResult, "p2 should be last with THREE_OF_A_KIND.")
+    }
+
+    @Test
+    fun testStartNewGameCallsRefreshAfterStartNewGame() {
+        val rootService = RootService()
+        val gameService = GameService(rootService)
+        val testRefreshable = TestRefreshable()
+
+        gameService.addRefreshable(testRefreshable)
+        gameService.startNewGame(listOf("Alice", "Bob"), 5)
+
+        assertTrue(testRefreshable.refreshAfterStartNewGame, "refreshAfterStartNewGame was not called.")
     }
 }

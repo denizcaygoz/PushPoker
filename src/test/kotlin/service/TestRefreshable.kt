@@ -28,6 +28,9 @@ class TestRefreshable: Refreshable {
     var refreshAfterEndGame : Boolean = false
         private set
 
+    /**
+     * to reset boolean variables if necessary.
+     */
     fun resetRefreshableState() {
         refreshAfterStartNewGame = false
         refreshAfterStartTurn = false

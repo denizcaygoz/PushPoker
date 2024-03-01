@@ -13,6 +13,9 @@ class CardTest {
     lateinit var cardDiamondQueen: Card
     lateinit var cardClubJack: Card
 
+    /**
+     * To set up cards.
+     */
     @BeforeTest
     fun setUp() {
         cardHeartAce = Card(CardSuit.HEARTS, CardValue.ACE)
@@ -21,6 +24,9 @@ class CardTest {
         cardClubJack = Card(CardSuit.CLUBS, CardValue.JACK)
     }
 
+    /**
+     * To check if cards successfully initialized.
+     */
     @Test
     fun testCardInitialization() {
         assertEquals(CardSuit.HEARTS, cardHeartAce.cardsuit)

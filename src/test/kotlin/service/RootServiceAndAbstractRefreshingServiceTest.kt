@@ -1,9 +1,11 @@
 package service
 import view.Refreshable
-import kotlin.test.BeforeTest
-import kotlin.test.Test
-import kotlin.test.assertEquals
+import kotlin.test.*
 
+
+class TestService : AbstractRefreshingService() {
+    // This class intentionally left blank, used only for testing purposes.
+}
 /**
  * A class which inherits Refreshable to help testing
  */
@@ -15,13 +17,17 @@ class TestRefreshable0: Refreshable {
  * RootServiceTest class tests mainly the addRefreshable and addRefreshables functions in RootService class.
  */
 class RootServiceAndAbstractRefreshingServiceTest {
-
+    private lateinit var testService: TestService
     private lateinit var rootService: RootService
 
+    /**
+     * starting a new game.
+     */
     @BeforeTest
     fun setUp() {
         rootService = RootService()
         rootService.gameService.startNewGame(listOf("p1", "p2"), 5)
+        testService = TestService()
     }
 
     /**
@@ -49,6 +55,17 @@ class RootServiceAndAbstractRefreshingServiceTest {
         rootService.addRefreshables(testRefreshable1, testRefreshable2)
 
     }
+
+    /**
+     * Test to ensure that the `refreshables` variable in `AbstractRefreshingService` is correctly initialized.
+     */
+    @Test
+    fun testRefreshablesInitialization() {
+        assertNotNull(testService.refreshables, "refreshables should not be null.")
+        assertTrue(testService.refreshables.isEmpty(), "refreshables should be initialized empty.")
+    }
+
+
 }
 
 

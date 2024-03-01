@@ -24,7 +24,7 @@ class GameService(private val rootService: RootService): AbstractRefreshingServi
         check(players.size <= 4) {"maximum 4 players"}
 
         //to shuffle the order of the players' List
-        //players.shuffled()
+        val shuffledPlayers = players.shuffled()
         //draw stack is by createNewDeck() initialized
         val drawStack: CardStack = rootService.cardService.createNewDeck()
         //game is initialized.
@@ -32,7 +32,7 @@ class GameService(private val rootService: RootService): AbstractRefreshingServi
         game.drawStack = drawStack
         game.discardStack = CardStack()
         //Player objects are created and added to the playerList in PushPoker.
-        players.forEach { playerName ->
+        shuffledPlayers.forEach { playerName ->
             game.players.add(Player(playerName))
         }
         //3 tableCards in the middle are set up

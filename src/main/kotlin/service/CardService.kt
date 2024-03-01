@@ -8,7 +8,7 @@ import entity.CardValue
  * CardService class is responsible to the initial deck of drawCard.
  * createNewDeck() function is used in the createNewGame() function in the GameService class
  */
-class CardService(private val rootService: RootService): AbstractRefreshingService() {
+class CardService(val rootService: RootService): AbstractRefreshingService() {
     /**
      * This function creates a deck of 52 Cards with all possible combination of CardSuit and CardValue values.
      * @return: CardStack which is then assigned in drawStack in createNewGame() function.

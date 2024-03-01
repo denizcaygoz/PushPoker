@@ -3,11 +3,17 @@ import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
+/**
+ * To test push poker class.
+ */
 class PushPokerTest {
 
     lateinit var pushPoker: PushPoker
     lateinit var pushPokerToTest3CardsOnTheTable: PushPoker
 
+    /**
+     * setting up necessary variables.
+     */
     @BeforeTest
     fun setUp() {
         pushPokerToTest3CardsOnTheTable = PushPoker()

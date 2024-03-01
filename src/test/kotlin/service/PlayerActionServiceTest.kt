@@ -1,9 +1,6 @@
 package service
 import entity.*
-import kotlin.test.BeforeTest
-import kotlin.test.Test
-import kotlin.test.assertEquals
-import kotlin.test.assertNotEquals
+import kotlin.test.*
 
 /**
  * PlayerActionServiceTest is to test PlayerActionService class.
@@ -12,6 +9,10 @@ class PlayerActionServiceTest {
 
     private lateinit var game: RootService
     private lateinit var testRefreshable: TestRefreshable
+
+    /**
+     * starting a new game.
+     */
     @BeforeTest
     fun setUp() {
         game = RootService()
@@ -218,6 +219,36 @@ class PlayerActionServiceTest {
     }
 
     /**
+     * Tests that an exception is thrown if `swapAll` is called with an invalid current player index.
+     */
+    @Test
+    fun testSwapAllWithInvalidCurrentPlayer() {
+        game.currentGame?.currentPlayer = -1
+        // Attempt to call swapAll, expecting an IllegalStateException
+        assertFailsWith<IllegalStateException> { game.playerActionService.swapAll() }
+    }
+
+    /**
+     * Tests that an exception is thrown if `swapAll` is called before the player has pushed.
+     */
+    @Test
+    fun testSwapAllWithoutPush() {
+        val currentPlayer = game.currentGame?.players?.first()
+        currentPlayer?.hasPushed = false
+        assertFailsWith<IllegalStateException> { game.playerActionService.swapAll() }
+    }
+
+    /**
+     * Tests that an exception is thrown if `swapAll` is called after the player has already swapped.
+     */
+    @Test
+    fun testSwapAllAfterSwap() {
+        val currentPlayer = game.currentGame?.players?.first()
+        currentPlayer?.hasSwapped = true
+        assertFailsWith<IllegalStateException> { game.playerActionService.swapAll() }
+    }
+
+    /**
      * SwapOneTest tests the SwapOne function
      */
     @Test
@@ -266,6 +297,59 @@ class PlayerActionServiceTest {
         assertEquals(true,testRefreshable.refreshPlayerCards)
         assertEquals(true,testRefreshable.refreshHandValue)
     }
+    /**
+     * Tests that an exception is thrown if `swapOne` is called with an invalid current player index.
+     */
+    @Test
+    fun testSwapOneWithInvalidCurrentPlayer() {
+        game.currentGame?.currentPlayer = -1
+        // Attempt to call swapOne, expecting an IllegalStateException for invalid current player
+        assertFailsWith<IllegalStateException> {
+            game.playerActionService.swapOne(0, 1)
+        }
+    }
+
+    /**
+     * Tests that an exception is thrown if `swapOne` is called before the player has pushed.
+     */
+    @Test
+    fun testSwapOneWithoutPush() {
+        val currentPlayer = game.currentGame?.players?.first()
+        currentPlayer?.hasPushed = false
+        // Attempt to call swapOne, expecting an IllegalStateException for not having pushed
+        assertFailsWith<IllegalStateException> {
+            game.playerActionService.swapOne(0, 1)
+        }
+    }
+
+    /**
+     * Tests that an exception is thrown if `swapOne` is called after the player has already swapped.
+     */
+    @Test
+    fun testSwapOneAfterSwap() {
+        val currentPlayer = game.currentGame?.players?.first()
+        currentPlayer?.hasSwapped = true
+        // Attempt to call swapOne, expecting an IllegalStateException for already having swapped
+        assertFailsWith<IllegalStateException> {
+            game.playerActionService.swapOne(0, 1)
+        }
+    }
+
+    /**
+     * Tests that an exception is thrown if `swapOne` is called with out-of-bounds card indices.
+     */
+    @Test
+    fun testSwapOneWithOutOfBoundsIndices() {
+        // Assuming the currentPlayer is valid and has pushed but not swapped.
+        val currentPlayer = game.currentGame?.players?.first()
+        currentPlayer?.hasPushed = true
+        currentPlayer?.hasSwapped = false
+
+        // Attempt to call swapOne with invalid indices, expecting an IllegalStateException for out-of-bounds indices
+        assertFailsWith<IllegalStateException> {
+            game.playerActionService.swapOne(-1, 5) // Out-of-bounds indices
+        }
+    }
 
     /**
      * EndTurnTest tests the endTurn function.
@@ -297,7 +381,8 @@ class PlayerActionServiceTest {
         val newCurrentPlayerIndex = game.currentGame?.currentPlayer
         assertEquals((initialCurrentPlayerIndex + 1) , newCurrentPlayerIndex, "Should move to the next player.")
         //testing roundsLeft.
-        assertEquals(initialRoundsLeft, game.currentGame?.roundsLeft, "Rounds left should remain the same if not last player's turn.")
+        assertEquals(initialRoundsLeft, game.currentGame?.roundsLeft,
+            "Rounds left should remain the same if not last player's turn.")
     }
     /**
      * EndTurnTest tests the endTurn function.

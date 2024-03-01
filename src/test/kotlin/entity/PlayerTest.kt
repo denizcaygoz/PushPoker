@@ -14,6 +14,9 @@ class PlayerTest {
     var p2handResult: PokerHand = PokerHand.FULL_HOUSE
     var p4handResult: PokerHand = PokerHand.FLUSH
 
+    /**
+     * To set up necessary variables.
+     */
     @BeforeTest
     fun setUp() {
         p1 = Player("P1")
@@ -31,11 +34,19 @@ class PlayerTest {
         p4.handResult = p4handResult
 
     }
+
+    /**
+     * To test if hand result is true.
+     */
     @Test
     fun testHandResult() {
         assertEquals(PokerHand.FULL_HOUSE, p2.handResult, "P2's handResult should be FULL_HOUSE")
         assertEquals(PokerHand.FLUSH, p4.handResult, "P4's handResult should be FLUSH")
     }
+
+    /**
+     * to test the player names.
+     */
     @Test
     fun testPlayersName() {
         assertEquals("P1",p1.name)
@@ -49,6 +60,9 @@ class PlayerTest {
         assertFalse("P4" == p1.name)
     }
 
+    /**
+     * to test hasPushed and hasSwapped
+     */
     @Test
     fun testHasPushedAndHasSwapped()
     {

@@ -117,6 +117,8 @@ class PlayerActionService(private val rootService: RootService): AbstractRefresh
         //endTurn()
     }
 
+
+
     /**
      * swapOne is called when the player has clicked the swapOne button.
      * refreshTableCards() and refreshPlayerCards(currentPlayer) and refreshHandValue(currentPlayer) are called to update the GUI after the action has done.
@@ -212,8 +214,10 @@ class PlayerActionService(private val rootService: RootService): AbstractRefresh
      * the function works as following:
      * 1.allCards = Combine the player's open and hidden cards into a single list for evaluation.
      * 2.cardsByValue = Sort this combined list by card value to simplify finding straights.
-     * 3.cardsBySuit = Group cards by value and by suit to help identify pairs, three-of-a-kinds, four-of-a-kinds, flushes, and full houses.
-     * 4.Check for straight flushes, flushes, straights, and other combinations in descending order of hand strength.
+     * 3.cardsBySuit = Group cards by value and by suit to help identify pairs, three-of-a-kinds,
+     * four-of-a-kinds, flushes, and full houses.
+     * 4.Check for straight flushes, flushes, straights, and other combinations in descending
+     * order of hand strength.
      * 5.Update the player's handResult with the highest value hand.
      */
      fun evaluateHand(player: Player) {

@@ -31,20 +31,23 @@ class InGameScene(val rootService: RootService) : BoardGameScene(1920, 1080), Re
                 middleCardsAreClickable = true
                 openCardsAreClickable = false
                 swapOneHandCardIndex = 0
+                scale = 1.1
 
             }
             rootService.currentGame?.let { game ->
-
             }
         }
     }
+
+
+
     private val player1OpenCard2 = LabeledStackView(posX = 900, posY = 670, "OpenCard 2").apply {
         onMouseClicked = {
             if(duringSwapOne && openCardsAreClickable && player1OpenCard2IsClickable) {
                 middleCardsAreClickable = true
                 openCardsAreClickable = false
                 swapOneHandCardIndex = 1
-
+                scale = 1.1
             }
         }
     }
@@ -54,7 +57,7 @@ class InGameScene(val rootService: RootService) : BoardGameScene(1920, 1080), Re
                 middleCardsAreClickable = true
                 openCardsAreClickable = false
                 swapOneHandCardIndex = 2
-
+                scale = 1.1
             }
             rootService.currentGame?.let { game ->
 
@@ -69,6 +72,8 @@ class InGameScene(val rootService: RootService) : BoardGameScene(1920, 1080), Re
         }
 
     }
+
+
 
     private val player1HiddenCard2 = LabeledStackView(posX = 975, posY = 875, "Hidden Card 2").apply {
         onMouseClicked = {
@@ -86,7 +91,7 @@ class InGameScene(val rootService: RootService) : BoardGameScene(1920, 1080), Re
                 middleCardsAreClickable = true
                 openCardsAreClickable = false
                 swapOneHandCardIndex = 0
-
+                scale = 1.1
             }
         }
     }
@@ -96,7 +101,7 @@ class InGameScene(val rootService: RootService) : BoardGameScene(1920, 1080), Re
                 middleCardsAreClickable = true
                 openCardsAreClickable = false
                 swapOneHandCardIndex = 1
-
+                scale = 1.1
             }
         }
     }
@@ -106,7 +111,7 @@ class InGameScene(val rootService: RootService) : BoardGameScene(1920, 1080), Re
                 middleCardsAreClickable = true
                 openCardsAreClickable = false
                 swapOneHandCardIndex = 2
-
+                scale = 1.1
             }
         }
     }
@@ -134,7 +139,7 @@ class InGameScene(val rootService: RootService) : BoardGameScene(1920, 1080), Re
                 middleCardsAreClickable = true
                 openCardsAreClickable = false
                 swapOneHandCardIndex = 0
-
+                scale = 1.1
             }
         }
     }
@@ -144,7 +149,7 @@ class InGameScene(val rootService: RootService) : BoardGameScene(1920, 1080), Re
                 middleCardsAreClickable = true
                 openCardsAreClickable = false
                 swapOneHandCardIndex = 1
-
+                scale = 1.1
             }
         }
     }
@@ -154,7 +159,7 @@ class InGameScene(val rootService: RootService) : BoardGameScene(1920, 1080), Re
                 middleCardsAreClickable = true
                 openCardsAreClickable = false
                 swapOneHandCardIndex = 2
-
+                scale = 1.1
             }
         }
     }
@@ -182,7 +187,7 @@ class InGameScene(val rootService: RootService) : BoardGameScene(1920, 1080), Re
                 middleCardsAreClickable = true
                 openCardsAreClickable = false
                 swapOneHandCardIndex = 0
-
+                scale = 1.1
             }
         }
     }
@@ -192,7 +197,7 @@ class InGameScene(val rootService: RootService) : BoardGameScene(1920, 1080), Re
                 middleCardsAreClickable = true
                 openCardsAreClickable = false
                 swapOneHandCardIndex = 1
-
+                scale = 1.1
             }
         }
     }
@@ -202,7 +207,7 @@ class InGameScene(val rootService: RootService) : BoardGameScene(1920, 1080), Re
                 middleCardsAreClickable = true
                 openCardsAreClickable = false
                 swapOneHandCardIndex = 2
-
+                scale = 1.1
             }
         }
     }
@@ -224,34 +229,86 @@ class InGameScene(val rootService: RootService) : BoardGameScene(1920, 1080), Re
 
     }
 
+
+
     //Middle Cards
-    private val MiddleCard1 = LabeledStackView(posX = 750, posY = 440, "Middle Card 1").apply {
+    private val middleCard1 = LabeledStackView(posX = 750, posY = 440, "Middle Card 1").apply {
         onMouseClicked = {
             if(duringSwapOne && middleCardsAreClickable) {
                 middleCardsAreClickable = false
                 swapOneMiddleCardIndex = 0
+                resizeSwappedOneCards()
                 rootService.playerActionService.swapOne(swapOneHandCardIndex,swapOneMiddleCardIndex)
             }
         }
     }
-    private val MiddleCard2 = LabeledStackView(posX = 900, posY = 440, "Middle Card 2").apply {
+    private val middleCard2 = LabeledStackView(posX = 900, posY = 440, "Middle Card 2").apply {
         onMouseClicked = {
             if(duringSwapOne && middleCardsAreClickable) {
                 middleCardsAreClickable = false
                 swapOneMiddleCardIndex = 1
+                resizeSwappedOneCards()
                 rootService.playerActionService.swapOne(swapOneHandCardIndex,swapOneMiddleCardIndex)
             }
         }
     }
-    private val MiddleCard3 = LabeledStackView(posX = 1050, posY = 440, "Middle Card 3").apply {
+    private val middleCard3 = LabeledStackView(posX = 1050, posY = 440, "Middle Card 3").apply {
         onMouseClicked = {
             if(duringSwapOne && middleCardsAreClickable) {
                 middleCardsAreClickable = false
                 swapOneMiddleCardIndex = 2
+                resizeSwappedOneCards()
                 rootService.playerActionService.swapOne(swapOneHandCardIndex,swapOneMiddleCardIndex)
             }
         }
     }
+    //player Name Labels Buttons.
+    private val player1NameLabel = Label(
+        posX = 500,
+        posY = 750,
+        width = 300,
+        height = 200,
+        font = Font(size = 30),
+        text = "",
+        alignment = Alignment.CENTER_LEFT,
+        isWrapText = true
+
+    )
+    private val player2NameLabel = Label(
+        posX = 500,
+        posY = 50,
+        width = 300,
+        height = 200,
+        font = Font(size = 30),
+        text = "",
+        alignment = Alignment.CENTER_LEFT,
+        isWrapText = true
+
+    )
+
+    private val player3NameLabel = Label(
+        posX = 100,
+        posY = 180,
+        width = 300,
+        height = 200,
+        font = Font(size = 30),
+        text = "",
+        alignment = Alignment.CENTER_LEFT,
+        isWrapText = true
+
+    )
+
+    private val player4NameLabel = Label(
+        posX = 1600,
+        posY = 180,
+        width = 300,
+        height = 200,
+        font = Font(size = 30),
+        text = "",
+        alignment = Alignment.CENTER_LEFT,
+        isWrapText = true
+
+    )
 
     //Push Buttons
     val pushLeft = Button(
@@ -381,9 +438,9 @@ class InGameScene(val rootService: RootService) : BoardGameScene(1920, 1080), Re
             player4OpenCard3,
             player4HiddenCard1,
             player4HiddenCard2,
-            MiddleCard1,
-            MiddleCard2,
-            MiddleCard3,
+            middleCard1,
+            middleCard2,
+            middleCard3,
             pushLeft,
             pushRight,
             discardStack,
@@ -392,7 +449,11 @@ class InGameScene(val rootService: RootService) : BoardGameScene(1920, 1080), Re
             swapAll,
             endTurn,
             roundLabel,
-            handValueLabel
+            handValueLabel,
+            player1NameLabel,
+            player2NameLabel,
+            player3NameLabel,
+            player4NameLabel
         )
         /**
          * These are disabled. Since player
@@ -425,9 +486,9 @@ class InGameScene(val rootService: RootService) : BoardGameScene(1920, 1080), Re
         game.discardStack?.let { initializeStackView(it, discardStack, cardImageLoader) }
 
         //Initializing GUI of Middle Cards.
-        initializeCardView(game.tableCards!![0],MiddleCard1,CardImageLoader())
-        initializeCardView(game.tableCards!![1],MiddleCard2,CardImageLoader())
-        initializeCardView(game.tableCards!![2],MiddleCard3,CardImageLoader())
+        initializeCardView(game.tableCards!![0],middleCard1,CardImageLoader())
+        initializeCardView(game.tableCards!![1],middleCard2,CardImageLoader())
+        initializeCardView(game.tableCards!![2],middleCard3,CardImageLoader())
 
         //Initializing GUI of open- and hidden cards.
         for (i in 0 until game.players.size) {
@@ -438,6 +499,7 @@ class InGameScene(val rootService: RootService) : BoardGameScene(1920, 1080), Re
                     initializeCardView(game.players[i].openCards[2],player1OpenCard3,CardImageLoader())
                     initializeCardView(game.players[i].hiddenCards[0],player1HiddenCard1,CardImageLoader())
                     initializeCardView(game.players[i].hiddenCards[1],player1HiddenCard2,CardImageLoader())
+                    player1NameLabel.text = game.players[i].name + ":"
                 }
                 1 -> {
                     initializeCardView(game.players[i].openCards[0],player2OpenCard1,CardImageLoader())
@@ -445,6 +507,7 @@ class InGameScene(val rootService: RootService) : BoardGameScene(1920, 1080), Re
                     initializeCardView(game.players[i].openCards[2],player2OpenCard3,CardImageLoader())
                     initializeCardView(game.players[i].hiddenCards[0],player2HiddenCard1,CardImageLoader())
                     initializeCardView(game.players[i].hiddenCards[1],player2HiddenCard2,CardImageLoader())
+                    player2NameLabel.text = game.players[i].name + ":"
                 }
                 2 -> {
                     initializeCardView(game.players[i].openCards[0],player3OpenCard1,CardImageLoader())
@@ -452,6 +515,7 @@ class InGameScene(val rootService: RootService) : BoardGameScene(1920, 1080), Re
                     initializeCardView(game.players[i].openCards[2],player3OpenCard3,CardImageLoader())
                     initializeCardView(game.players[i].hiddenCards[0],player3HiddenCard1,CardImageLoader())
                     initializeCardView(game.players[i].hiddenCards[1],player3HiddenCard2,CardImageLoader())
+                    player3NameLabel.text = game.players[i].name + ":"
                 }
                 3 -> {
                     initializeCardView(game.players[i].openCards[0],player4OpenCard1,CardImageLoader())
@@ -459,6 +523,7 @@ class InGameScene(val rootService: RootService) : BoardGameScene(1920, 1080), Re
                     initializeCardView(game.players[i].openCards[2],player4OpenCard3,CardImageLoader())
                     initializeCardView(game.players[i].hiddenCards[0],player4HiddenCard1,CardImageLoader())
                     initializeCardView(game.players[i].hiddenCards[1],player4HiddenCard2,CardImageLoader())
+                    player4NameLabel.text = game.players[i].name + ":"
                 }
             }
 
@@ -617,16 +682,16 @@ class InGameScene(val rootService: RootService) : BoardGameScene(1920, 1080), Re
                         val openCard1 = player1OpenCard1.pop()
                         when (swapOneMiddleCardIndex) {
                             0 -> {
-                                moveCardView(MiddleCard1.peek(), player1OpenCard1, false)
-                                moveCardViewForSwap(openCard1, MiddleCard1, false)
+                                moveCardView(middleCard1.peek(), player1OpenCard1, false)
+                                moveCardViewForSwap(openCard1, middleCard1, false)
                             }
                             1 -> {
-                                moveCardView(MiddleCard2.peek(), player1OpenCard1, false)
-                                moveCardViewForSwap(openCard1, MiddleCard2, false)
+                                moveCardView(middleCard2.peek(), player1OpenCard1, false)
+                                moveCardViewForSwap(openCard1, middleCard2, false)
                             }
                             2 -> {
-                                moveCardView(MiddleCard3.peek(), player1OpenCard1, false)
-                                moveCardViewForSwap(openCard1, MiddleCard3, false)
+                                moveCardView(middleCard3.peek(), player1OpenCard1, false)
+                                moveCardViewForSwap(openCard1, middleCard3, false)
                             }
                         }
                     }
@@ -634,16 +699,16 @@ class InGameScene(val rootService: RootService) : BoardGameScene(1920, 1080), Re
                         val openCard2 = player1OpenCard2.pop()
                         when (swapOneMiddleCardIndex) {
                             0 -> {
-                                moveCardView(MiddleCard1.peek(), player1OpenCard2, false)
-                                moveCardViewForSwap(openCard2, MiddleCard1, false)
+                                moveCardView(middleCard1.peek(), player1OpenCard2, false)
+                                moveCardViewForSwap(openCard2, middleCard1, false)
                             }
                             1 -> {
-                                moveCardView(MiddleCard2.peek(), player1OpenCard2, false)
-                                moveCardViewForSwap(openCard2, MiddleCard2, false)
+                                moveCardView(middleCard2.peek(), player1OpenCard2, false)
+                                moveCardViewForSwap(openCard2, middleCard2, false)
                             }
                             2 -> {
-                                moveCardView(MiddleCard3.peek(), player1OpenCard2, false)
-                                moveCardViewForSwap(openCard2, MiddleCard3, false)
+                                moveCardView(middleCard3.peek(), player1OpenCard2, false)
+                                moveCardViewForSwap(openCard2, middleCard3, false)
                             }
                         }
                     }
@@ -651,16 +716,16 @@ class InGameScene(val rootService: RootService) : BoardGameScene(1920, 1080), Re
                         val openCard3 = player1OpenCard3.pop()
                         when (swapOneMiddleCardIndex) {
                             0 -> {
-                                moveCardView(MiddleCard1.peek(), player1OpenCard3, false)
-                                moveCardViewForSwap(openCard3, MiddleCard1, false)
+                                moveCardView(middleCard1.peek(), player1OpenCard3, false)
+                                moveCardViewForSwap(openCard3, middleCard1, false)
                             }
                             1 -> {
-                                moveCardView(MiddleCard2.peek(), player1OpenCard3, false)
-                                moveCardViewForSwap(openCard3, MiddleCard2, false)
+                                moveCardView(middleCard2.peek(), player1OpenCard3, false)
+                                moveCardViewForSwap(openCard3, middleCard2, false)
                             }
                             2 -> {
-                                moveCardView(MiddleCard3.peek(), player1OpenCard3, false)
-                                moveCardViewForSwap(openCard3, MiddleCard3, false)
+                                moveCardView(middleCard3.peek(), player1OpenCard3, false)
+                                moveCardViewForSwap(openCard3, middleCard3, false)
                             }
                         }
                     }
@@ -672,16 +737,16 @@ class InGameScene(val rootService: RootService) : BoardGameScene(1920, 1080), Re
                         val openCard1 = player2OpenCard1.pop()
                         when (swapOneMiddleCardIndex) {
                             0 -> {
-                                moveCardView(MiddleCard1.peek(), player2OpenCard1, false)
-                                moveCardViewForSwap(openCard1, MiddleCard1, false)
+                                moveCardView(middleCard1.peek(), player2OpenCard1, false)
+                                moveCardViewForSwap(openCard1, middleCard1, false)
                             }
                             1 -> {
-                                moveCardView(MiddleCard2.peek(), player2OpenCard1, false)
-                                moveCardViewForSwap(openCard1, MiddleCard2, false)
+                                moveCardView(middleCard2.peek(), player2OpenCard1, false)
+                                moveCardViewForSwap(openCard1, middleCard2, false)
                             }
                             2 -> {
-                                moveCardView(MiddleCard3.peek(), player2OpenCard1, false)
-                                moveCardViewForSwap(openCard1, MiddleCard3, false)
+                                moveCardView(middleCard3.peek(), player2OpenCard1, false)
+                                moveCardViewForSwap(openCard1, middleCard3, false)
                             }
                         }
                     }
@@ -689,16 +754,16 @@ class InGameScene(val rootService: RootService) : BoardGameScene(1920, 1080), Re
                         val openCard2 = player2OpenCard2.pop()
                         when (swapOneMiddleCardIndex) {
                             0 -> {
-                                moveCardView(MiddleCard1.peek(), player2OpenCard2, false)
-                                moveCardViewForSwap(openCard2, MiddleCard1, false)
+                                moveCardView(middleCard1.peek(), player2OpenCard2, false)
+                                moveCardViewForSwap(openCard2, middleCard1, false)
                             }
                             1 -> {
-                                moveCardView(MiddleCard2.peek(), player2OpenCard2, false)
-                                moveCardViewForSwap(openCard2, MiddleCard2, false)
+                                moveCardView(middleCard2.peek(), player2OpenCard2, false)
+                                moveCardViewForSwap(openCard2, middleCard2, false)
                             }
                             2 -> {
-                                moveCardView(MiddleCard3.peek(), player2OpenCard2, false)
-                                moveCardViewForSwap(openCard2, MiddleCard3, false)
+                                moveCardView(middleCard3.peek(), player2OpenCard2, false)
+                                moveCardViewForSwap(openCard2, middleCard3, false)
                             }
                         }
                     }
@@ -706,16 +771,16 @@ class InGameScene(val rootService: RootService) : BoardGameScene(1920, 1080), Re
                         val openCard3 = player2OpenCard3.pop()
                         when (swapOneMiddleCardIndex) {
                             0 -> {
-                                moveCardView(MiddleCard1.peek(), player2OpenCard3, false)
-                                moveCardViewForSwap(openCard3, MiddleCard1, false)
+                                moveCardView(middleCard1.peek(), player2OpenCard3, false)
+                                moveCardViewForSwap(openCard3, middleCard1, false)
                             }
                             1 -> {
-                                moveCardView(MiddleCard2.peek(), player2OpenCard3, false)
-                                moveCardViewForSwap(openCard3, MiddleCard2, false)
+                                moveCardView(middleCard2.peek(), player2OpenCard3, false)
+                                moveCardViewForSwap(openCard3, middleCard2, false)
                             }
                             2 -> {
-                                moveCardView(MiddleCard3.peek(), player2OpenCard3, false)
-                                moveCardViewForSwap(openCard3, MiddleCard3, false)
+                                moveCardView(middleCard3.peek(), player2OpenCard3, false)
+                                moveCardViewForSwap(openCard3, middleCard3, false)
                             }
                         }
                     }
@@ -727,16 +792,16 @@ class InGameScene(val rootService: RootService) : BoardGameScene(1920, 1080), Re
                         val openCard1 = player3OpenCard1.pop()
                         when (swapOneMiddleCardIndex) {
                             0 -> {
-                                moveCardView(MiddleCard1.peek(), player3OpenCard1, false)
-                                moveCardViewForSwap(openCard1, MiddleCard1, false)
+                                moveCardView(middleCard1.peek(), player3OpenCard1, false)
+                                moveCardViewForSwap(openCard1, middleCard1, false)
                             }
                             1 -> {
-                                moveCardView(MiddleCard2.peek(), player3OpenCard1, false)
-                                moveCardViewForSwap(openCard1, MiddleCard2, false)
+                                moveCardView(middleCard2.peek(), player3OpenCard1, false)
+                                moveCardViewForSwap(openCard1, middleCard2, false)
                             }
                             2 -> {
-                                moveCardView(MiddleCard3.peek(), player3OpenCard1, false)
-                                moveCardViewForSwap(openCard1, MiddleCard3, false)
+                                moveCardView(middleCard3.peek(), player3OpenCard1, false)
+                                moveCardViewForSwap(openCard1, middleCard3, false)
                             }
                         }
                     }
@@ -744,16 +809,16 @@ class InGameScene(val rootService: RootService) : BoardGameScene(1920, 1080), Re
                         val openCard2 = player3OpenCard2.pop()
                         when (swapOneMiddleCardIndex) {
                             0 -> {
-                                moveCardView(MiddleCard1.peek(), player3OpenCard2, false)
-                                moveCardViewForSwap(openCard2, MiddleCard1, false)
+                                moveCardView(middleCard1.peek(), player3OpenCard2, false)
+                                moveCardViewForSwap(openCard2, middleCard1, false)
                             }
                             1 -> {
-                                moveCardView(MiddleCard2.peek(), player3OpenCard2, false)
-                                moveCardViewForSwap(openCard2, MiddleCard2, false)
+                                moveCardView(middleCard2.peek(), player3OpenCard2, false)
+                                moveCardViewForSwap(openCard2, middleCard2, false)
                             }
                             2 -> {
-                                moveCardView(MiddleCard3.peek(), player3OpenCard2, false)
-                                moveCardViewForSwap(openCard2, MiddleCard3, false)
+                                moveCardView(middleCard3.peek(), player3OpenCard2, false)
+                                moveCardViewForSwap(openCard2, middleCard3, false)
                             }
                         }
                     }
@@ -761,16 +826,16 @@ class InGameScene(val rootService: RootService) : BoardGameScene(1920, 1080), Re
                         val openCard3 = player3OpenCard3.pop()
                         when (swapOneMiddleCardIndex) {
                             0 -> {
-                                moveCardView(MiddleCard1.peek(), player3OpenCard3, false)
-                                moveCardViewForSwap(openCard3, MiddleCard1, false)
+                                moveCardView(middleCard1.peek(), player3OpenCard3, false)
+                                moveCardViewForSwap(openCard3, middleCard1, false)
                             }
                             1 -> {
-                                moveCardView(MiddleCard2.peek(), player3OpenCard3, false)
-                                moveCardViewForSwap(openCard3, MiddleCard2, false)
+                                moveCardView(middleCard2.peek(), player3OpenCard3, false)
+                                moveCardViewForSwap(openCard3, middleCard2, false)
                             }
                             2 -> {
-                                moveCardView(MiddleCard3.peek(), player3OpenCard3, false)
-                                moveCardViewForSwap(openCard3, MiddleCard3, false)
+                                moveCardView(middleCard3.peek(), player3OpenCard3, false)
+                                moveCardViewForSwap(openCard3, middleCard3, false)
                             }
                         }
                     }
@@ -782,16 +847,16 @@ class InGameScene(val rootService: RootService) : BoardGameScene(1920, 1080), Re
                         val openCard1 = player4OpenCard1.pop()
                         when (swapOneMiddleCardIndex) {
                             0 -> {
-                                moveCardView(MiddleCard1.peek(), player4OpenCard1, false)
-                                moveCardViewForSwap(openCard1, MiddleCard1, false)
+                                moveCardView(middleCard1.peek(), player4OpenCard1, false)
+                                moveCardViewForSwap(openCard1, middleCard1, false)
                             }
                             1 -> {
-                                moveCardView(MiddleCard2.peek(), player4OpenCard1, false)
-                                moveCardViewForSwap(openCard1, MiddleCard2, false)
+                                moveCardView(middleCard2.peek(), player4OpenCard1, false)
+                                moveCardViewForSwap(openCard1, middleCard2, false)
                             }
                             2 -> {
-                                moveCardView(MiddleCard3.peek(), player4OpenCard1, false)
-                                moveCardViewForSwap(openCard1, MiddleCard3, false)
+                                moveCardView(middleCard3.peek(), player4OpenCard1, false)
+                                moveCardViewForSwap(openCard1, middleCard3, false)
                             }
                         }
                     }
@@ -799,16 +864,16 @@ class InGameScene(val rootService: RootService) : BoardGameScene(1920, 1080), Re
                         val openCard2 = player4OpenCard2.pop()
                         when (swapOneMiddleCardIndex) {
                             0 -> {
-                                moveCardView(MiddleCard1.peek(), player4OpenCard2, false)
-                                moveCardViewForSwap(openCard2, MiddleCard1, false)
+                                moveCardView(middleCard1.peek(), player4OpenCard2, false)
+                                moveCardViewForSwap(openCard2, middleCard1, false)
                             }
                             1 -> {
-                                moveCardView(MiddleCard2.peek(), player4OpenCard2, false)
-                                moveCardViewForSwap(openCard2, MiddleCard2, false)
+                                moveCardView(middleCard2.peek(), player4OpenCard2, false)
+                                moveCardViewForSwap(openCard2, middleCard2, false)
                             }
                             2 -> {
-                                moveCardView(MiddleCard3.peek(), player4OpenCard2, false)
-                                moveCardViewForSwap(openCard2, MiddleCard3, false)
+                                moveCardView(middleCard3.peek(), player4OpenCard2, false)
+                                moveCardViewForSwap(openCard2, middleCard3, false)
                             }
                         }
                     }
@@ -816,16 +881,16 @@ class InGameScene(val rootService: RootService) : BoardGameScene(1920, 1080), Re
                         val openCard3 = player4OpenCard3.pop()
                         when (swapOneMiddleCardIndex) {
                             0 -> {
-                                moveCardView(MiddleCard1.peek(), player4OpenCard3, false)
-                                moveCardViewForSwap(openCard3, MiddleCard1, false)
+                                moveCardView(middleCard1.peek(), player4OpenCard3, false)
+                                moveCardViewForSwap(openCard3, middleCard1, false)
                             }
                             1 -> {
-                                moveCardView(MiddleCard2.peek(), player4OpenCard3, false)
-                                moveCardViewForSwap(openCard3, MiddleCard2, false)
+                                moveCardView(middleCard2.peek(), player4OpenCard3, false)
+                                moveCardViewForSwap(openCard3, middleCard2, false)
                             }
                             2 -> {
-                                moveCardView(MiddleCard3.peek(), player4OpenCard3, false)
-                                moveCardViewForSwap(openCard3, MiddleCard3, false)
+                                moveCardView(middleCard3.peek(), player4OpenCard3, false)
+                                moveCardViewForSwap(openCard3, middleCard3, false)
                             }
                         }
                     }
@@ -920,56 +985,56 @@ class InGameScene(val rootService: RootService) : BoardGameScene(1920, 1080), Re
         checkNotNull(game) { "No game found." }
 
         if(game.currentPlayer == 0) {
-            var openCard1 = player1OpenCard1.pop()
-            var openCard2 = player1OpenCard2.pop()
-            var openCard3 = player1OpenCard3.pop()
+            val openCard1 = player1OpenCard1.pop()
+            val openCard2 = player1OpenCard2.pop()
+            val openCard3 = player1OpenCard3.pop()
 
 
-            moveCardView(MiddleCard1.peek(), player1OpenCard1, false)
-            moveCardView(MiddleCard2.peek(), player1OpenCard2, false)
-            moveCardView(MiddleCard3.peek(), player1OpenCard3, false)
-            moveCardViewForSwap(openCard1, MiddleCard1, false)
-            moveCardViewForSwap(openCard2, MiddleCard2, false)
-            moveCardViewForSwap(openCard3, MiddleCard3, false)
+            moveCardView(middleCard1.peek(), player1OpenCard1, false)
+            moveCardView(middleCard2.peek(), player1OpenCard2, false)
+            moveCardView(middleCard3.peek(), player1OpenCard3, false)
+            moveCardViewForSwap(openCard1, middleCard1, false)
+            moveCardViewForSwap(openCard2, middleCard2, false)
+            moveCardViewForSwap(openCard3, middleCard3, false)
         }
         else if(game.currentPlayer == 1) {
-            var openCard1 = player2OpenCard1.pop()
-            var openCard2 = player2OpenCard2.pop()
-            var openCard3 = player2OpenCard3.pop()
+            val openCard1 = player2OpenCard1.pop()
+            val openCard2 = player2OpenCard2.pop()
+            val openCard3 = player2OpenCard3.pop()
 
 
-            moveCardView(MiddleCard1.peek(), player2OpenCard1, false)
-            moveCardView(MiddleCard2.peek(), player2OpenCard2, false)
-            moveCardView(MiddleCard3.peek(), player2OpenCard3, false)
-            moveCardViewForSwap(openCard1, MiddleCard1, false)
-            moveCardViewForSwap(openCard2, MiddleCard2, false)
-            moveCardViewForSwap(openCard3, MiddleCard3, false)
+            moveCardView(middleCard1.peek(), player2OpenCard1, false)
+            moveCardView(middleCard2.peek(), player2OpenCard2, false)
+            moveCardView(middleCard3.peek(), player2OpenCard3, false)
+            moveCardViewForSwap(openCard1, middleCard1, false)
+            moveCardViewForSwap(openCard2, middleCard2, false)
+            moveCardViewForSwap(openCard3, middleCard3, false)
         }
         else if(game.currentPlayer == 2) {
-            var openCard1 = player3OpenCard1.pop()
-            var openCard2 = player3OpenCard2.pop()
-            var openCard3 = player3OpenCard3.pop()
+            val openCard1 = player3OpenCard1.pop()
+            val openCard2 = player3OpenCard2.pop()
+            val openCard3 = player3OpenCard3.pop()
 
 
-            moveCardView(MiddleCard1.peek(), player3OpenCard1, false)
-            moveCardView(MiddleCard2.peek(), player3OpenCard2, false)
-            moveCardView(MiddleCard3.peek(), player3OpenCard3, false)
-            moveCardViewForSwap(openCard1, MiddleCard1, false)
-            moveCardViewForSwap(openCard2, MiddleCard2, false)
-            moveCardViewForSwap(openCard3, MiddleCard3, false)
+            moveCardView(middleCard1.peek(), player3OpenCard1, false)
+            moveCardView(middleCard2.peek(), player3OpenCard2, false)
+            moveCardView(middleCard3.peek(), player3OpenCard3, false)
+            moveCardViewForSwap(openCard1, middleCard1, false)
+            moveCardViewForSwap(openCard2, middleCard2, false)
+            moveCardViewForSwap(openCard3, middleCard3, false)
         }
         else if(game.currentPlayer == 3) {
-            var openCard1 = player4OpenCard1.pop()
-            var openCard2 = player4OpenCard2.pop()
-            var openCard3 = player4OpenCard3.pop()
+            val openCard1 = player4OpenCard1.pop()
+            val openCard2 = player4OpenCard2.pop()
+            val openCard3 = player4OpenCard3.pop()
 
 
-            moveCardView(MiddleCard1.peek(), player4OpenCard1, false)
-            moveCardView(MiddleCard2.peek(), player4OpenCard2, false)
-            moveCardView(MiddleCard3.peek(), player4OpenCard3, false)
-            moveCardViewForSwap(openCard1, MiddleCard1, false)
-            moveCardViewForSwap(openCard2, MiddleCard2, false)
-            moveCardViewForSwap(openCard3, MiddleCard3, false)
+            moveCardView(middleCard1.peek(), player4OpenCard1, false)
+            moveCardView(middleCard2.peek(), player4OpenCard2, false)
+            moveCardView(middleCard3.peek(), player4OpenCard3, false)
+            moveCardViewForSwap(openCard1, middleCard1, false)
+            moveCardViewForSwap(openCard2, middleCard2, false)
+            moveCardViewForSwap(openCard3, middleCard3, false)
         }
     }
 
@@ -979,10 +1044,10 @@ class InGameScene(val rootService: RootService) : BoardGameScene(1920, 1080), Re
         checkNotNull(game) { "No game found." }
 
         //Push Left
-        moveCardView(MiddleCard1.peek(), discardStack, false)
-        moveCardView(MiddleCard2.peek(), MiddleCard1, false)
-        moveCardView(MiddleCard3.peek(), MiddleCard2, false)
-        moveCardView(drawStack.peek(), MiddleCard3, true)
+        moveCardView(middleCard1.peek(), discardStack, false)
+        moveCardView(middleCard2.peek(), middleCard1, false)
+        moveCardView(middleCard3.peek(), middleCard2, false)
+        moveCardView(drawStack.peek(), middleCard3, true)
     }
 
     private fun refreshCardsTablePushRight() {
@@ -990,10 +1055,10 @@ class InGameScene(val rootService: RootService) : BoardGameScene(1920, 1080), Re
         checkNotNull(game) { "No game found." }
 
         //Push Right
-        moveCardView(MiddleCard3.peek(), discardStack, false)
-        moveCardView(MiddleCard2.peek(), MiddleCard3, false)
-        moveCardView(MiddleCard1.peek(), MiddleCard2, false)
-        moveCardView(drawStack.peek(), MiddleCard1, true)
+        moveCardView(middleCard3.peek(), discardStack, false)
+        moveCardView(middleCard2.peek(), middleCard3, false)
+        moveCardView(middleCard1.peek(), middleCard2, false)
+        moveCardView(drawStack.peek(), middleCard1, true)
     }
 
     private fun moveCardView(cardView: CardView, toStack: LabeledStackView, flip: Boolean = false) {
@@ -1095,6 +1160,36 @@ class InGameScene(val rootService: RootService) : BoardGameScene(1920, 1080), Re
         swapOneMiddleCardIndex = -1
         roundLabel.text = "Remaining Rounds:" + roundsLeft
         handValueLabel.text = "Hand Value: " + game.players[game.currentPlayer].handResult
+
+    }
+
+    /**
+     * Resizes the swappe Card of the player after the swap One.
+     */
+    private fun resizeSwappedOneCards() {
+        val game = rootService.currentGame
+        checkNotNull(game)
+
+        if(game.currentPlayer == 0) {
+            player1OpenCard1.scale = 1.0
+            player1OpenCard2.scale = 1.0
+            player1OpenCard3.scale = 1.0
+        }
+        else if (game.currentPlayer == 1) {
+            player2OpenCard1.scale = 1.0
+            player2OpenCard2.scale = 1.0
+            player2OpenCard3.scale = 1.0
+        }
+        else if (game.currentPlayer == 2) {
+            player3OpenCard1.scale = 1.0
+            player3OpenCard2.scale = 1.0
+            player3OpenCard3.scale = 1.0
+        }
+        else if (game.currentPlayer == 3) {
+            player4OpenCard1.scale = 1.0
+            player4OpenCard2.scale = 1.0
+            player4OpenCard3.scale = 1.0
+        }
 
     }
 }

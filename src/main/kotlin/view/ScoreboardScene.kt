@@ -11,7 +11,7 @@ import tools.aqua.bgw.visual.ColorVisual
 /**
  * This class represents the score board scene at the end of the game.
  */
-class ScoreboardScene(private val rootService: RootService) : MenuScene(400, 1080), Refreshable {
+class ScoreboardScene(val rootService: RootService) : MenuScene(400, 1080), Refreshable {
     var scoreboard: List<Player> = listOf()
     private val headlineLabel = Label(
         width = 300, height = 50, posX = 50, posY = 30,
@@ -117,6 +117,9 @@ class ScoreboardScene(private val rootService: RootService) : MenuScene(400, 108
         firstPlayerLabel.text = scoreboard[0].name + " with " + scoreboard[0].handResult
     }
 
+    /**
+     * Texts for scoreboard
+     */
     fun generateTexts() {
         generateFirstPlayerText()
         generateSecondPlayerText()

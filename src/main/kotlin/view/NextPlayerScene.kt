@@ -37,13 +37,18 @@ class NextPlayerScene(private val rootService: RootService) : MenuScene(1920, 10
         )
     }
 
+    /**
+     * To show who has the following turn.
+     */
      fun headlineTextGenerator() {
         val game = rootService.currentGame
         checkNotNull(game) { "No started game found." }
         val str = game.players[game.currentPlayer].name + " has the turn."
         headlineLabel.text = str
     }
-
+    /**
+     * To show the remaining rounds.
+     */
     fun headlineTextRoundEndGenerator() {
         val game = rootService.currentGame
         checkNotNull(game) { "No started game found." }
