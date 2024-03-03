@@ -455,6 +455,7 @@ class InGameScene(val rootService: RootService) : BoardGameScene(1920, 1080), Re
             player3NameLabel,
             player4NameLabel
         )
+
         /**
          * These are disabled. Since player
          * has to do push first.
