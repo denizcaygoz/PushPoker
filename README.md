@@ -12,6 +12,8 @@ The combination of each player's 3 open and 2 hidden cards determines the value 
 * Each player has 2 hidden and 3 open cards, but unlike hidden cards, open cards can be seen by other players.
 * There is 1 draw stack, 1 discard stack, and 3 cards in the middle.
 * When it is the player's turn to move, the player must first perform the "Push Left" or "Push Right" action.
+* Push Left discards the most-left card on the mid, shifts the other two cards to the left and places a new card from draw stack to the right most position on the mid.
+* Push Right discards the most-right card on the mid, shifts the other two cards to the right and places a new card from draw stack to the left most position on the mid.
 * After the push action is performed, the player may perform one of the following actions: swap one, swap all, end turn.  
 After performing any of these actions, the player ends his turn.
 * To swap one, player must select one of his cards and one of the cards on the middle to swap.
