@@ -1,6 +1,7 @@
 # PushPoker
 
-A card game project for a university class. The game is very similar to usual poker but has some differences.
+A card game project for a university class. The game is very similar to usual poker but has some differences.  
+
 ![pushpokeringame](https://github.com/denizcaygoz/PushPoker/assets/46894986/af3cd436-959e-40a0-a032-4eac87240537)
 
 ## Rules 
